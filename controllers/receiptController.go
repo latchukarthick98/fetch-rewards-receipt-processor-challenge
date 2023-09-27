@@ -6,7 +6,11 @@ package controllers
 
 import (
 	"fetch-rewards-receipt-processor-challenge/datastore"
+
 	"fetch-rewards-receipt-processor-challenge/models"
+
+	"fetch-rewards-receipt-processor-challenge/helpers"
+
 	"fmt"
 	"net/http"
 
@@ -16,6 +20,18 @@ import (
 
 	"github.com/google/uuid"
 )
+
+type resultItem struct {
+	ID string `json:"id"`
+}
+
+func calculateRetailerPoints(name string) int {
+	return helpers.CountAlphaNumeric(name)
+}
+func calculatePoints(receipt models.Receipt) int {
+	res := calculateRetailerPoints(receipt.Retailer)
+	return res
+}
 
 func ProcessReceipt(c *gin.Context) {
 	var receipt models.Receipt
@@ -47,11 +63,16 @@ func ProcessReceipt(c *gin.Context) {
 		return
 	}
 
+	points := calculatePoints(receipt)
+
 	ds := datastore.Points
-	ds[u.String()] = 100
+	ds[u.String()] = points
 
 	fmt.Println(ds)
+	result := resultItem{
+		ID: u.String(),
+	}
 
-	c.IndentedJSON(http.StatusCreated, receipt)
+	c.IndentedJSON(http.StatusCreated, result)
 
 }
