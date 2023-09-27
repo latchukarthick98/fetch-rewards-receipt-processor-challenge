@@ -5,6 +5,7 @@
 package helpers
 
 import (
+	"strings"
 	"unicode"
 )
 
@@ -17,4 +18,15 @@ func CountAlphaNumeric(s string) int {
 		}
 	}
 	return count
+}
+
+// Checks if the given dollar amount is rounded to whole dollars.
+func IsRounded(amount string) bool {
+	parts := strings.Split(amount, ".")
+	if len(parts) != 2 {
+		// Not a valid dollar amount format
+		return false
+	}
+	// Check if the decimal part is "00"
+	return parts[1] == "00"
 }

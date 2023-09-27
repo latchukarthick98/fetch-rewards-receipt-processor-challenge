@@ -25,11 +25,22 @@ type resultItem struct {
 	ID string `json:"id"`
 }
 
+// Calculates points based on the no. of Alpha numeric characters in the Retailer's name
 func calculateRetailerPoints(name string) int {
 	return helpers.CountAlphaNumeric(name)
 }
+
+// Calculate points if the Total amount is rounded with no cents
+func calculateRoundAmountPoints(amount string) int {
+	if helpers.IsRounded(amount) {
+		return 50
+	}
+	return 0
+}
+
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
+	res += calculateRoundAmountPoints(receipt.Total)
 	return res
 }
 
