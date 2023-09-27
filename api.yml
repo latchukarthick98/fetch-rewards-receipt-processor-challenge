@@ -3,6 +3,17 @@ info:
     title: Receipt Processor
     description: A simple receipt processor
     version: 1.0.0
+servers:
+- url: http://{host}:{port}
+  description: 'This Server can be used to test the HASHh API locally. '
+  variables:
+    host:
+      default: localhost
+      description: The Host IP or domain name of the server.
+    port:
+      default: "3001"
+      description: The port at which the API is listening.
+
 paths:
     /receipts/process:
         post:

@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fetch-rewards-receipt-processor-challenge/routes"
 	"fmt"
 	"log"
 	"os"
@@ -33,7 +34,7 @@ func main() {
 	// Get PORT number from .env file
 	port := getEnvVar("PORT")
 
-	// routes.InitRouter(r)
+	routes.InitRouter(r)
 	fmt.Printf("Running on Port %s \n", port)
 	// Initialze Server on Port 3001
 	r.Run(":" + port)
