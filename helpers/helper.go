@@ -5,6 +5,7 @@
 package helpers
 
 import (
+	"fetch-rewards-receipt-processor-challenge/models"
 	"strings"
 	"unicode"
 )
@@ -59,4 +60,9 @@ func IsMultipleOfQuarter(amount string) bool {
 	default:
 		return false
 	}
+}
+
+// Counts the number of pairs in the list of items
+func CountPairs(items []models.Item) int {
+	return len(items) / 2
 }

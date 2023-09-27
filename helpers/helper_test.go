@@ -5,6 +5,7 @@
 package helpers
 
 import (
+	"fetch-rewards-receipt-processor-challenge/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -35,4 +36,27 @@ func TestIsMultipleOfQuarter(t *testing.T) {
 		}
 	}
 
+}
+
+func TestCountPairs(t *testing.T) {
+	item1 := models.Item{
+		ShortDescription: "Gatorade",
+		Price:            "2.25",
+	}
+	item2 := models.Item{
+		ShortDescription: "Pepsi",
+		Price:            "2.50",
+	}
+	item3 := models.Item{
+		ShortDescription: "Knorr Creamy Chicken",
+		Price:            "1.26",
+	}
+
+	items1 := []models.Item{item1, item2, item3, item1, item2}
+	items2 := []models.Item{item1, item2, item3, item1, item2, item3}
+	items3 := []models.Item{item1}
+
+	assert.Equal(t, CountPairs(items1), 2)
+	assert.Equal(t, CountPairs(items2), 3)
+	assert.Equal(t, CountPairs(items3), 0)
 }

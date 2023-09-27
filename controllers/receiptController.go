@@ -45,10 +45,15 @@ func calculateQuarterPoints(amount string) int {
 	return 0
 }
 
+func calculatePointsForPairs(items []models.Item) int {
+	return helpers.CountPairs(items) * 5
+}
+
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
 	res += calculateRoundAmountPoints(receipt.Total)
 	res += calculateQuarterPoints(receipt.Total)
+	res += calculatePointsForPairs(receipt.Items)
 	return res
 }
 
