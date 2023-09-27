@@ -72,3 +72,11 @@ func TestIsDayOdd(t *testing.T) {
 	assert.True(t, IsDayOdd("2022-01-01"), "Expected to return true")
 	assert.False(t, IsDayOdd("2023-01-02"), "Expected to return false")
 }
+
+func TestIsTimeInRange(t *testing.T) {
+	startTime := "14:00"
+	endTime := "16:00"
+	assert.True(t, IsTimeInRange("14:01", startTime, endTime), "Expected to return true")
+	assert.False(t, IsTimeInRange("13:01", startTime, endTime), "Expected to return false")
+	assert.False(t, IsTimeInRange("03:31", startTime, endTime), "Expected to return false")
+}

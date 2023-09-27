@@ -74,10 +74,20 @@ func calculatePointsForItemDesc(items []models.Item) int {
 	return points
 }
 
+// Calculates 6 points when the day is odd
 func calculateOddDayPoints(date string) int {
 	if helpers.IsDayOdd(date) {
 		return 6
 	}
+	return 0
+}
+
+// Calculates 10 points when the purchase time is between 2:00 pm and 4:00 pm
+func calculatePointsForTimeRange(time string) int {
+	if helpers.IsTimeInRange(time, "14:00", "16:00") {
+		return 10
+	}
+
 	return 0
 }
 
@@ -89,6 +99,7 @@ func calculatePoints(receipt models.Receipt) int {
 	res += calculatePointsForPairs(receipt.Items)
 	res += calculatePointsForItemDesc(receipt.Items)
 	res += calculateOddDayPoints(receipt.PurchaseDate)
+	res += calculatePointsForTimeRange(receipt.PurchaseTime)
 	return res
 }
 

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 )
 
@@ -84,4 +85,20 @@ func IsDayOdd(date string) bool {
 	}
 
 	return int(day)%2 != 0
+}
+
+// Check if a time string is in the given range. Time is passed as string.
+func IsTimeInRange(tStr string, startTimeStr string, endTimeStr string) bool {
+	layout := "15:04" // 24-hour time format
+
+	t, err := time.Parse(layout, tStr)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	startTime, _ := time.Parse(layout, startTimeStr)
+	endTime, _ := time.Parse(layout, endTimeStr)
+	fmt.Printf("Time in range: %t\n", t.After(startTime) && t.Before(endTime))
+	return t.After(startTime) && t.Before(endTime)
 }
