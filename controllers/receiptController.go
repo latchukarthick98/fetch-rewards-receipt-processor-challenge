@@ -6,6 +6,8 @@ package controllers
 
 import (
 	"fetch-rewards-receipt-processor-challenge/datastore"
+	"math"
+	"strconv"
 
 	"fetch-rewards-receipt-processor-challenge/models"
 
@@ -49,11 +51,30 @@ func calculatePointsForPairs(items []models.Item) int {
 	return helpers.CountPairs(items) * 5
 }
 
+func calculatePointsForItemDesc(items []models.Item) int {
+	points := 0
+	for _, item := range items {
+		if helpers.TrimmedLength(item.ShortDescription)%3 == 0 {
+			price, err := strconv.ParseFloat(item.Price, 64)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return 0
+			}
+			point := int(math.Ceil(price * 0.2))
+			fmt.Printf("Point for %s : %d\n", item.ShortDescription, point)
+			points += point
+		}
+	}
+	fmt.Printf("Points for Item Description: %d \n", points)
+	return points
+}
+
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
 	res += calculateRoundAmountPoints(receipt.Total)
 	res += calculateQuarterPoints(receipt.Total)
 	res += calculatePointsForPairs(receipt.Items)
+	res += calculatePointsForItemDesc(receipt.Items)
 	return res
 }
 

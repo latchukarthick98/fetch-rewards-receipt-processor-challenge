@@ -66,3 +66,7 @@ func IsMultipleOfQuarter(amount string) bool {
 func CountPairs(items []models.Item) int {
 	return len(items) / 2
 }
+
+func TrimmedLength(s string) int {
+	return len(strings.TrimSpace(s))
+}
