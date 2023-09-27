@@ -140,10 +140,10 @@ func ProcessReceipt(c *gin.Context) {
 
 	points := calculatePoints(receipt)
 
-	ds := datastore.Points
-	ds[u.String()] = points
+	// ds := datastore.Points
+	datastore.Points[u.String()] = points
 
-	fmt.Println(ds)
+	fmt.Println(datastore.Points)
 	result := resultItem{
 		ID: u.String(),
 	}
@@ -156,10 +156,15 @@ func ProcessReceipt(c *gin.Context) {
 func GetPoints(c *gin.Context) {
 	id := c.Param("id")
 
-	ds := datastore.Points
-	points := ds[id]
+	// ds := datastore.Points
+	value, ok := datastore.Points[id]
+	if !ok {
+		c.IndentedJSON(http.StatusNotFound, "No receipt found for that id")
+		return
+	}
+	points := value
 
-	fmt.Println(ds)
+	fmt.Println(datastore.Points)
 	result := pointsResultItem{
 		Points: points,
 	}

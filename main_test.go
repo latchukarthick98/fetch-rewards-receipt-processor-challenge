@@ -6,14 +6,23 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fetch-rewards-receipt-processor-challenge/controllers"
+	"fetch-rewards-receipt-processor-challenge/datastore"
+	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+type proccessResultBody struct {
+	ID string `json:"id"`
+}
 
 func SetUpRouter() *gin.Engine {
 	router := gin.Default()
@@ -21,8 +30,11 @@ func SetUpRouter() *gin.Engine {
 }
 
 func TestProcessReceipt(t *testing.T) {
+	mockResponse := `{"points":28}`
+	t.Cleanup(datastore.Cleanup)
 	r := SetUpRouter()
 	r.POST("/receipts/process", controllers.ProcessReceipt)
+	r.GET("/receipts/:id/points", controllers.GetPoints)
 
 	data := `{
 		"retailer": "Target",
@@ -54,4 +66,24 @@ func TestProcessReceipt(t *testing.T) {
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
+
+	var res proccessResultBody
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+	// fmt.Printf("ID: %s\n", res.ID)
+	// fmt.Printf("Result body: %s\n", w.Body.String())
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	secondReqURL := fmt.Sprintf("/receipts/%s/points", res.ID)
+	req, _ = http.NewRequest("GET", secondReqURL, nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	responseData, _ := io.ReadAll(w.Body)
+	// fmt.Println(datastore.Points)
+	// fmt.Printf("Second Response: %s", responseData)
+	require.JSONEq(t, mockResponse, string(responseData))
+	assert.Equal(t, http.StatusOK, w.Code)
+
 }

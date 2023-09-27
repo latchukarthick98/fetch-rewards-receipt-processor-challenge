@@ -6,3 +6,10 @@ package datastore
 
 // Maps the points assigned to each receipt where the key is the ID generated when the receipt is posted.
 var Points map[string]int = make(map[string]int)
+
+// Clean up, useful for Unit tests
+func Cleanup() {
+	for k := range Points {
+		delete(Points, k)
+	}
+}
