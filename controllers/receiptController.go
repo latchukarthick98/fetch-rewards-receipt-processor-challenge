@@ -40,6 +40,7 @@ func calculateRoundAmountPoints(amount string) int {
 	return 0
 }
 
+// Returns 25 points if the amout is a multiple of quarter (0.25 cents)
 func calculateQuarterPoints(amount string) int {
 	if helpers.IsMultipleOfQuarter(amount) {
 		return 25
@@ -47,10 +48,14 @@ func calculateQuarterPoints(amount string) int {
 	return 0
 }
 
+// Calculates the points for each pair of items (5 points each) in the list
 func calculatePointsForPairs(items []models.Item) int {
 	return helpers.CountPairs(items) * 5
 }
 
+/* Calculates the points based on Description of each item in the list by multiplying
+*  the price by 0.2 and rounding it up to nearest integer
+ */
 func calculatePointsForItemDesc(items []models.Item) int {
 	points := 0
 	for _, item := range items {
@@ -69,6 +74,7 @@ func calculatePointsForItemDesc(items []models.Item) int {
 	return points
 }
 
+// Cumulatively calculates the points based on the rules defined
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
 	res += calculateRoundAmountPoints(receipt.Total)

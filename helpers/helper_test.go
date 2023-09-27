@@ -60,3 +60,10 @@ func TestCountPairs(t *testing.T) {
 	assert.Equal(t, CountPairs(items2), 3)
 	assert.Equal(t, CountPairs(items3), 0)
 }
+
+func TestTrimmedLength(t *testing.T) {
+	assert.Equal(t, TrimmedLength("   Klarbrunn 12-PK 12 FL OZ  "), 24)
+	assert.Equal(t, TrimmedLength("Klarbrunn 12-PK 12 FL OZ"), 24)
+	assert.Equal(t, TrimmedLength("Pepsi 100 ML"), 12)
+	assert.Equal(t, TrimmedLength("Pepsi 100 ML "), 12)
+}
