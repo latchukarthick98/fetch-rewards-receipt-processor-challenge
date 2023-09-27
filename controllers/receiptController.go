@@ -148,7 +148,7 @@ func ProcessReceipt(c *gin.Context) {
 		ID: u.String(),
 	}
 
-	c.IndentedJSON(http.StatusCreated, result)
+	c.IndentedJSON(http.StatusOK, result)
 
 }
 
@@ -164,6 +164,6 @@ func GetPoints(c *gin.Context) {
 		Points: points,
 	}
 
-	c.IndentedJSON(http.StatusAccepted, result)
+	c.IndentedJSON(http.StatusOK, result)
 
 }
