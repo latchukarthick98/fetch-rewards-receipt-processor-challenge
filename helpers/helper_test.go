@@ -67,3 +67,8 @@ func TestTrimmedLength(t *testing.T) {
 	assert.Equal(t, TrimmedLength("Pepsi 100 ML"), 12)
 	assert.Equal(t, TrimmedLength("Pepsi 100 ML "), 12)
 }
+
+func TestIsDayOdd(t *testing.T) {
+	assert.True(t, IsDayOdd("2022-01-01"), "Expected to return true")
+	assert.False(t, IsDayOdd("2023-01-02"), "Expected to return false")
+}

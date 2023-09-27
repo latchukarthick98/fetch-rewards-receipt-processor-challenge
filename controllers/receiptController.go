@@ -74,6 +74,13 @@ func calculatePointsForItemDesc(items []models.Item) int {
 	return points
 }
 
+func calculateOddDayPoints(date string) int {
+	if helpers.IsDayOdd(date) {
+		return 6
+	}
+	return 0
+}
+
 // Cumulatively calculates the points based on the rules defined
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
@@ -81,9 +88,11 @@ func calculatePoints(receipt models.Receipt) int {
 	res += calculateQuarterPoints(receipt.Total)
 	res += calculatePointsForPairs(receipt.Items)
 	res += calculatePointsForItemDesc(receipt.Items)
+	res += calculateOddDayPoints(receipt.PurchaseDate)
 	return res
 }
 
+// Controller for the receipt processing POST endpoint
 func ProcessReceipt(c *gin.Context) {
 	var receipt models.Receipt
 

@@ -6,6 +6,8 @@ package helpers
 
 import (
 	"fetch-rewards-receipt-processor-challenge/models"
+	"fmt"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -67,6 +69,19 @@ func CountPairs(items []models.Item) int {
 	return len(items) / 2
 }
 
+// Calculates the length of the string after trimming whitespaces
 func TrimmedLength(s string) int {
 	return len(strings.TrimSpace(s))
+}
+
+// Determines if the day is odd in a date passed as string
+func IsDayOdd(date string) bool {
+	parts := strings.Split(date, "-")
+	day, err := strconv.ParseFloat(parts[2], 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return false
+	}
+
+	return int(day)%2 != 0
 }
