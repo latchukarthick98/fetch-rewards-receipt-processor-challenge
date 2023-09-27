@@ -23,3 +23,16 @@ func TestRoundedDollar(t *testing.T) {
 	assert.True(t, IsRounded("0.00"), "Expected to return True")
 	assert.False(t, IsRounded("21.12"), "Expected to return False")
 }
+
+func TestIsMultipleOfQuarter(t *testing.T) {
+	testValues := []string{"9.00", "21.00", "21.25", "21.5", "21.75", "21.1", "21.12", "20.123"}
+	results := []bool{true, true, true, true, true, false, false, false}
+	for i, value := range testValues {
+		if results[i] {
+			assert.True(t, IsMultipleOfQuarter(value), "Expected to return True")
+		} else {
+			assert.False(t, IsMultipleOfQuarter(value), "Expected to return False")
+		}
+	}
+
+}

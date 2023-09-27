@@ -38,9 +38,17 @@ func calculateRoundAmountPoints(amount string) int {
 	return 0
 }
 
+func calculateQuarterPoints(amount string) int {
+	if helpers.IsMultipleOfQuarter(amount) {
+		return 25
+	}
+	return 0
+}
+
 func calculatePoints(receipt models.Receipt) int {
 	res := calculateRetailerPoints(receipt.Retailer)
 	res += calculateRoundAmountPoints(receipt.Total)
+	res += calculateQuarterPoints(receipt.Total)
 	return res
 }
 

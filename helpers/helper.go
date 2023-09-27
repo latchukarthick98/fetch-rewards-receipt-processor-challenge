@@ -30,3 +30,33 @@ func IsRounded(amount string) bool {
 	// Check if the decimal part is "00"
 	return parts[1] == "00"
 }
+
+// check if amount is a multiple of 0.25
+func IsMultipleOfQuarter(amount string) bool {
+	// If string is an integer
+	if !strings.Contains(amount, ".") {
+		return true
+	}
+
+	// Split the string into whole and fractional parts
+	parts := strings.Split(amount, ".")
+	fraction := parts[1]
+
+	// If there's more than 2 decimal places, it's not a multiple of 0.25
+	if len(fraction) > 2 {
+		return false
+	}
+
+	// If there's only one decimal place, pad with a zero
+	if len(fraction) == 1 {
+		fraction += "0"
+	}
+
+	// Check if the fractional part is in the set of valid quarter multiples
+	switch fraction {
+	case "00", "25", "50", "75":
+		return true
+	default:
+		return false
+	}
+}
