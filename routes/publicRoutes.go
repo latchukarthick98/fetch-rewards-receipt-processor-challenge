@@ -12,4 +12,5 @@ import (
 
 func RegisterPublicRoutes(r *gin.Engine) {
 	r.POST("/receipts/process", controllers.ProcessReceipt)
+	r.GET("/receipts/:id/points", controllers.GetPoints)
 }

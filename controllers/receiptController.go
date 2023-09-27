@@ -27,6 +27,10 @@ type resultItem struct {
 	ID string `json:"id"`
 }
 
+type pointsResultItem struct {
+	Points int `json:"points"`
+}
+
 // Calculates points based on the no. of Alpha numeric characters in the Retailer's name
 func calculateRetailerPoints(name string) int {
 	return helpers.CountAlphaNumeric(name)
@@ -145,5 +149,21 @@ func ProcessReceipt(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusCreated, result)
+
+}
+
+// Controller for getting the points based on id
+func GetPoints(c *gin.Context) {
+	id := c.Param("id")
+
+	ds := datastore.Points
+	points := ds[id]
+
+	fmt.Println(ds)
+	result := pointsResultItem{
+		Points: points,
+	}
+
+	c.IndentedJSON(http.StatusAccepted, result)
 
 }
