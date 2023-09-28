@@ -104,10 +104,10 @@ The API follows the OpenAPI spec provided by [api.yml](api.yml) file.
 ## Routes
 
 ## Process Receipt
-Path: `/receipts/process`
-Method: `POST`
-Content-Type: `application/json`
-Response-Type: `application/json`
+* Path: `/receipts/process`
+* Method: `POST`
+* Content-Type: `application/json`
+* Response-Type: `application/json`
 
 ### Example
 Request: `http://localhost:${PORT}/receipts/process`
@@ -146,10 +146,10 @@ Response:
 ```
 
 ## Get Points
-Path: `/receipts/{id}/points`
-Method: `GET`
-Content-Type: `application/json`
-Response-Type: `application/json`
+* Path: `/receipts/{id}/points`
+* Method: `GET`
+* Content-Type: `application/json`
+* Response-Type: `application/json`
 
 ### Example
 
