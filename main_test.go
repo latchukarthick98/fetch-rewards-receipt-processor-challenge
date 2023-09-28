@@ -144,6 +144,118 @@ func TestProcessReceipt2(t *testing.T) {
 
 }
 
+func TestProcessReceipt3(t *testing.T) {
+	mockResponse := `{"points":60}`
+	t.Cleanup(datastore.Cleanup)
+	r := SetUpRouter()
+	r.POST("/receipts/process", controllers.ProcessReceipt)
+	r.GET("/receipts/:id/points", controllers.GetPoints)
+
+	data := `{
+		"retailer": "M&M Corner Market",
+		"purchaseDate": "2022-03-20",
+		"purchaseTime": "14:33",
+		"items": [
+		  {
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade 500 ML",
+			"price": "5.00"
+		  }
+		],
+		"total": "11.75"
+	  }`
+
+	req, _ := http.NewRequest("POST", "/receipts/process", bytes.NewBuffer([]byte(data)))
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	var res proccessResultBody
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+	// fmt.Printf("ID: %s\n", res.ID)
+	// fmt.Printf("Result body: %s\n", w.Body.String())
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	secondReqURL := fmt.Sprintf("/receipts/%s/points", res.ID)
+	req, _ = http.NewRequest("GET", secondReqURL, nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	responseData, _ := io.ReadAll(w.Body)
+	// fmt.Println(datastore.Points)
+	// fmt.Printf("Second Response: %s", responseData)
+	require.JSONEq(t, mockResponse, string(responseData))
+	assert.Equal(t, http.StatusOK, w.Code)
+
+}
+
+func TestProcessReceipt4(t *testing.T) {
+	mockResponse := `{"points":111}`
+	t.Cleanup(datastore.Cleanup)
+	r := SetUpRouter()
+	r.POST("/receipts/process", controllers.ProcessReceipt)
+	r.GET("/receipts/:id/points", controllers.GetPoints)
+
+	data := `{
+		"retailer": "M&M Corner Market",
+		"purchaseDate": "2022-03-20",
+		"purchaseTime": "14:33",
+		"items": [
+		  {
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade 500 ML",
+			"price": "5.25"
+		  }
+		],
+		"total": "12.00"
+	  }`
+
+	req, _ := http.NewRequest("POST", "/receipts/process", bytes.NewBuffer([]byte(data)))
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	var res proccessResultBody
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+	// fmt.Printf("ID: %s\n", res.ID)
+	// fmt.Printf("Result body: %s\n", w.Body.String())
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	secondReqURL := fmt.Sprintf("/receipts/%s/points", res.ID)
+	req, _ = http.NewRequest("GET", secondReqURL, nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	responseData, _ := io.ReadAll(w.Body)
+	// fmt.Println(datastore.Points)
+	// fmt.Printf("Second Response: %s", responseData)
+	require.JSONEq(t, mockResponse, string(responseData))
+	assert.Equal(t, http.StatusOK, w.Code)
+
+}
+
 func TestNonExistentReceipt(t *testing.T) {
 	t.Cleanup(datastore.Cleanup)
 	r := SetUpRouter()
