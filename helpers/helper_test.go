@@ -21,6 +21,7 @@ func TestCountAlphaNumeric(t *testing.T) {
 func TestRoundedDollar(t *testing.T) {
 	assert.False(t, IsRounded("33.45"), "Expected to return False")
 	assert.True(t, IsRounded("2.00"), "Expected to return True")
+	assert.True(t, IsRounded("02.00"), "Expected to return True")
 	assert.True(t, IsRounded("0.00"), "Expected to return True")
 	assert.False(t, IsRounded("21.12"), "Expected to return False")
 }
@@ -71,6 +72,7 @@ func TestTrimmedLength(t *testing.T) {
 func TestIsDayOdd(t *testing.T) {
 	assert.True(t, IsDayOdd("2022-01-01"), "Expected to return true")
 	assert.False(t, IsDayOdd("2023-01-02"), "Expected to return false")
+	assert.True(t, IsDayOdd("2023-03-03"), "Expected to return true")
 }
 
 func TestIsTimeInRange(t *testing.T) {
