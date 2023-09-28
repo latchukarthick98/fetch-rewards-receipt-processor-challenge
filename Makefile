@@ -8,6 +8,8 @@ build:
 run:
 	./${BINARY_NAME}
 
+run_dev:
+	go run main.go
 build_and_run: build run
 
 build_docker:
