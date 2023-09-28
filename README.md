@@ -97,3 +97,68 @@ or
 ```
 go test -v
 ```
+
+# API Documentation
+The API follows the OpenAPI spec provided by [api.yml](api.yml) file.
+
+## Routes
+
+## Process Receipt
+Path: `/receipts/process`
+Method: `POST`
+Content-Type: `application/json`
+Response-Type: `application/json`
+
+### Example
+Request: `http://localhost:${PORT}/receipts/process`
+
+curl: `curl -X 'POST' \
+  'http://localhost:3001/receipts/process' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "retailer": "Target",
+  "purchaseDate": "2022-01-01",
+  "purchaseTime": "13:01",
+  "items": [
+    {
+      "shortDescription": "Mountain Dew 12PK",
+      "price": "6.49"
+    },
+    {
+      "shortDescription": "Pepsi 100 ML",
+      "price": "2.50"
+    }
+
+
+  ],
+  "total": "6.50"
+}'`
+
+Response:
+```
+{
+  "id": "e70e562a-f473-4df4-9cd3-2ba35763790d"
+}
+```
+
+## Get Points
+Path: `/receipts/{id}/points`
+Method: `GET`
+Content-Type: `application/json`
+Response-Type: `application/json`
+
+### Example
+
+Request: `http://localhost:3001/receipts/e70e562a-f473-4df4-9cd3-2ba35763790d/points`
+
+curl: `curl -X 'GET' \
+  'http://localhost:3001/receipts/e70e562a-f473-4df4-9cd3-2ba35763790d/points' \
+  -H 'accept: application/json'`
+
+Response: 
+```
+{
+	"points": 43
+}
+```
