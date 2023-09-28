@@ -112,7 +112,8 @@ Response-Type: `application/json`
 ### Example
 Request: `http://localhost:${PORT}/receipts/process`
 
-curl: `curl -X 'POST' \
+curl: ```
+curl -X 'POST' \
   'http://localhost:3001/receipts/process' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -133,7 +134,8 @@ curl: `curl -X 'POST' \
 
   ],
   "total": "6.50"
-}'`
+}'
+```
 
 Response:
 ```
@@ -152,9 +154,9 @@ Response-Type: `application/json`
 
 Request: `http://localhost:3001/receipts/e70e562a-f473-4df4-9cd3-2ba35763790d/points`
 
-curl: `curl -X 'GET' \
+curl: ```curl -X 'GET' \
   'http://localhost:3001/receipts/e70e562a-f473-4df4-9cd3-2ba35763790d/points' \
-  -H 'accept: application/json'`
+  -H 'accept: application/json'```
 
 Response: 
 ```
