@@ -15,7 +15,9 @@ func TestCountAlphaNumeric(t *testing.T) {
 	assert.Equal(t, CountAlphaNumeric("Target"), 6)
 	assert.Equal(t, CountAlphaNumeric("M&M"), 2)
 	assert.Equal(t, CountAlphaNumeric("M&M Corner Market"), 14)
+	assert.Equal(t, CountAlphaNumeric("  M&M Corner Market "), 14)
 	assert.Equal(t, CountAlphaNumeric("7 Eleven!"), 7)
+	assert.Equal(t, CountAlphaNumeric("7 Eleven! "), 7)
 }
 
 func TestRoundedDollar(t *testing.T) {
