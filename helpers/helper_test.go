@@ -18,6 +18,7 @@ func TestCountAlphaNumeric(t *testing.T) {
 	assert.Equal(t, CountAlphaNumeric("  M&M Corner Market "), 14)
 	assert.Equal(t, CountAlphaNumeric("7 Eleven!"), 7)
 	assert.Equal(t, CountAlphaNumeric("7 Eleven! "), 7)
+	assert.Equal(t, CountAlphaNumeric(" "), 0)
 }
 
 func TestRoundedDollar(t *testing.T) {
@@ -75,6 +76,9 @@ func TestIsDayOdd(t *testing.T) {
 	assert.True(t, IsDayOdd("2022-01-01"), "Expected to return true")
 	assert.False(t, IsDayOdd("2023-01-02"), "Expected to return false")
 	assert.True(t, IsDayOdd("2023-03-03"), "Expected to return true")
+	assert.True(t, IsDayOdd("2023-03-21"), "Expected to return true")
+	assert.False(t, IsDayOdd("2023-01-10"), "Expected to return false")
+
 }
 
 func TestIsTimeInRange(t *testing.T) {
@@ -83,6 +87,8 @@ func TestIsTimeInRange(t *testing.T) {
 	assert.True(t, IsTimeInRange("14:01", startTime, endTime), "Expected to return true")
 	assert.False(t, IsTimeInRange("13:01", startTime, endTime), "Expected to return false")
 	assert.False(t, IsTimeInRange("03:31", startTime, endTime), "Expected to return false")
+	assert.False(t, IsTimeInRange("16:01", startTime, endTime), "Expected to return false")
+
 }
 
 func TestIsValidDate(t *testing.T) {

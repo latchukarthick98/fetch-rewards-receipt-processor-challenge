@@ -44,7 +44,7 @@ func calculateRoundAmountPoints(amount string) int {
 	return 0
 }
 
-// Returns 25 points if the amout is a multiple of quarter (0.25 cents)
+// Returns 25 points if the amount is a multiple of quarter (0.25 cents)
 func calculateQuarterPoints(amount string) int {
 	if helpers.IsMultipleOfQuarter(amount) {
 		return 25
