@@ -147,11 +147,46 @@ func TestProcessReceipt2(t *testing.T) {
 func TestNonExistentReceipt(t *testing.T) {
 	t.Cleanup(datastore.Cleanup)
 	r := SetUpRouter()
-	r.POST("/receipts/process", controllers.ProcessReceipt)
 	r.GET("/receipts/:id/points", controllers.GetPoints)
 
 	req, _ := http.NewRequest("GET", "receipts/1234455/points", nil) // test with a non-existent receipt id
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusNotFound, w.Code)
+}
+
+func TestProcessInvalidReceipt(t *testing.T) {
+	// mockResponse := `{"points":109}`
+	t.Cleanup(datastore.Cleanup)
+	r := SetUpRouter()
+	r.POST("/receipts/process", controllers.ProcessReceipt)
+
+	data := `{
+		"retailer": "M&M Corner Market",
+		"purchaseDate": "2022-03-40", // invalid date
+		"purchaseTime": "34:33", // invalid time
+		"items": [
+		  {
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  },{
+			"shortDescription": "Gatorade",
+			"price": "2.25"
+		  }
+		],
+		"total": "9.00"
+	  }`
+
+	req, _ := http.NewRequest("POST", "/receipts/process", bytes.NewBuffer([]byte(data)))
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+
 }

@@ -110,9 +110,12 @@ func calculatePoints(receipt models.Receipt) int {
 func sanityCheck(receipt models.Receipt) []string {
 	var errList []string
 
+	// check Purchase Date
 	if !helpers.IsValidDate(receipt.PurchaseDate) {
 		errList = append(errList, fmt.Sprintf("%s is not a valid date.", receipt.PurchaseDate))
 	}
+
+	// check Purchase time
 	if !helpers.IsValidTime(receipt.PurchaseTime) {
 		errList = append(errList, fmt.Sprintf("%s is not a valid time.", receipt.PurchaseTime))
 	}
@@ -193,7 +196,9 @@ func GetPoints(c *gin.Context) {
 	// ds := datastore.Points
 	value, ok := datastore.Points[id]
 	if !ok {
-		c.IndentedJSON(http.StatusNotFound, "No receipt found for that id")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg": fmt.Sprintf("No receipt found for the id: %s", id),
+		})
 		return
 	}
 	points := value
