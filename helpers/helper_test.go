@@ -82,3 +82,34 @@ func TestIsTimeInRange(t *testing.T) {
 	assert.False(t, IsTimeInRange("13:01", startTime, endTime), "Expected to return false")
 	assert.False(t, IsTimeInRange("03:31", startTime, endTime), "Expected to return false")
 }
+
+func TestIsValidDate(t *testing.T) {
+	assert.True(t, IsValidDate("2022-06-26"), "Expected to return true")
+	assert.False(t, IsValidDate("2023-02-31"), "Expected to return false")
+	assert.False(t, IsValidDate("2023-02-35"), "Expected to return false")
+	assert.False(t, IsValidDate("2023-13-31"), "Expected to return false")
+}
+
+func TestIsValidTime(t *testing.T) {
+	assert.True(t, IsValidTime("13:01"), "Expected to return true")
+	assert.True(t, IsValidTime("00:00"), "Expected to return true")
+	assert.False(t, IsValidTime("24:04"), "Expected to return false")
+	assert.False(t, IsValidTime("25:00"), "Expected to return false")
+	assert.False(t, IsValidTime("00:61"), "Expected to return false")
+	assert.False(t, IsValidTime("10:61"), "Expected to return false")
+
+}
+
+func TestIsValidDollarValue(t *testing.T) {
+	assert.True(t, IsValidDollarValue("3.35"), "Expected to return true")
+	assert.True(t, IsValidDollarValue("3.00"), "Expected to return true")
+	assert.True(t, IsValidDollarValue("334.35"), "Expected to return true")
+	assert.True(t, IsValidDollarValue("100.00"), "Expected to return true")
+	assert.True(t, IsValidDollarValue("0.00"), "Expected to return true")
+	assert.True(t, IsValidDollarValue("00.00"), "Expected to return true")
+
+	assert.False(t, IsValidDollarValue(".25"), "Expected to return false")
+	assert.False(t, IsValidDollarValue("1.2"), "Expected to return false")
+	assert.False(t, IsValidDollarValue("3"), "Expected to return false")
+	assert.False(t, IsValidDollarValue("1.254"), "Expected to return false")
+}

@@ -107,6 +107,30 @@ func calculatePoints(receipt models.Receipt) int {
 	return res
 }
 
+func sanityCheck(receipt models.Receipt) []string {
+	var errList []string
+
+	if !helpers.IsValidDate(receipt.PurchaseDate) {
+		errList = append(errList, fmt.Sprintf("%s is not a valid date.", receipt.PurchaseDate))
+	}
+	if !helpers.IsValidTime(receipt.PurchaseTime) {
+		errList = append(errList, fmt.Sprintf("%s is not a valid time.", receipt.PurchaseTime))
+	}
+
+	// Total dollar check
+	if !helpers.IsValidDollarValue(receipt.Total) {
+		errList = append(errList, fmt.Sprintf("Total: %s is not a valid dollar amount", receipt.Total))
+	}
+
+	// Check item prices
+	for _, item := range receipt.Items {
+		if !helpers.IsValidDollarValue(item.Price) {
+			errList = append(errList, fmt.Sprintf("Item: %s, Price: %s is not a valid dollar amount", item.ShortDescription, item.Price))
+		}
+	}
+	return errList
+}
+
 // Controller for the receipt processing POST endpoint
 func ProcessReceipt(c *gin.Context) {
 	var receipt models.Receipt
@@ -134,6 +158,16 @@ func ProcessReceipt(c *gin.Context) {
 		validationErrors := err.(validator.ValidationErrors)
 		c.JSON(400, gin.H{
 			"error": validationErrors.Error(),
+		})
+		return
+	}
+
+	// Sanity Checks
+	sanityCheckResults := sanityCheck(receipt)
+
+	if len(sanityCheckResults) > 0 {
+		c.JSON(400, gin.H{
+			"errors": sanityCheckResults,
 		})
 		return
 	}

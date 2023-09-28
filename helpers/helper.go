@@ -7,6 +7,7 @@ package helpers
 import (
 	"fetch-rewards-receipt-processor-challenge/models"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -101,4 +102,24 @@ func IsTimeInRange(tStr string, startTimeStr string, endTimeStr string) bool {
 	endTime, _ := time.Parse(layout, endTimeStr)
 	fmt.Printf("Time in range: %t\n", t.After(startTime) && t.Before(endTime))
 	return t.After(startTime) && t.Before(endTime)
+}
+
+// Checks if the date is in the format "YYYY-MM-DD"
+func IsValidDate(date string) bool {
+	_, err := time.ParseInLocation("2006-01-02", date, time.UTC)
+	return err == nil
+}
+
+// Checks if the time is in the format "HH:mm"
+func IsValidTime(t string) bool {
+	_, err := time.Parse("15:04", t)
+	return err == nil
+}
+
+// Checks if the provided string is a valid dollar value with exactly 2 decimal places.
+func IsValidDollarValue(value string) bool {
+	// Regular expression to match dollar values with 2 decimal places
+	pattern := `^\d+\.\d{2}$`
+	re := regexp.MustCompile(pattern)
+	return re.MatchString(value)
 }
